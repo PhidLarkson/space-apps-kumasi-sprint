@@ -48,6 +48,7 @@ iframe.full{position:fixed;inset:0;width:100%;height:100%;z-index:20;border:0;bo
 <button class="big" style="margin-top:16px" id="go">Build my mission patch</button></section>
 <div id="patch"></div>
 <section class="card" id="s4" style="display:none"><h2><span class="stepn">4</span>Launch it</h2><p class="hint">Send your patch to the big screen. Everyone in the room sees it appear.</p><button class="big" id="launch">Launch to the wall</button><p id="sent" class="hint" style="margin-top:10px"></p><p class="hint"><a href="wall.html">Open the wall</a></p></section>
+<section class="card" id="cvote"><h2><span class="stepn">⭐</span>Vote for your favourite</h2><p class="hint">When the teams are up on the showcase, open the voting page and pick your favourite. One vote per device; you can change it any time.</p><button class="big" onclick="location.href='vote.html'">Open the crowd vote</button><p class="hint" id="vstat" style="margin-top:8px"></p></section>
 <section class="card" id="lvl"><h2>Level up: make it impressive with AI</h2>
 <p class="hint"><b>1.</b> Tap an idea. <b>2.</b> Edit anything in [ ]. <b>3.</b> Copy the prompt and paste it into your AI chat. <b>4.</b> Copy the code the AI gives you and paste it in the box below. It runs instantly.</p>
 <div class="chips" id="chips"></div>
@@ -67,6 +68,7 @@ iframe.full{position:fixed;inset:0;width:100%;height:100%;z-index:20;border:0;bo
 </main>
 <footer>Space Apps Kumasi is a locally organised event held under the NASA Space Apps Challenge programme. Taking part is not affiliation with, sponsorship by, or endorsement from NASA or any space agency partner.</footer>
 <button class="fsx" id="fsx">Close full screen</button><canvas id="cf"></canvas>
+<script src="vote.js"></script>
 <script>
 const TOPIC="kumasi-gsc26-mtn78dup53";
 const PLACES=[["Kumasi, Ghana",6.67,-1.57],["Accra, Ghana",5.6,-0.19],["Lake Bosomtwe, Ghana",6.5,-1.41],["Atacama Desert, Chile",-22.9,-68.2],["Death Valley, USA",36.46,-116.87],["Haughton Crater, Canada",75.4,-89.7],["Hawaii, Mauna Kea",19.82,-155.47],["Iceland, Askja",65.03,-16.75],["Dallol, Ethiopia",14.24,40.3],["Sahara, Algeria",22.8,5.5]];
@@ -170,4 +172,5 @@ function confetti(){const c=$("cf"),x=c.getContext("2d");c.width=innerWidth;c.he
  const ps=Array.from({length:140},()=>({x:Math.random()*c.width,y:-20-Math.random()*c.height*.5,v:2+Math.random()*4,s:4+Math.random()*6,c:cl[Math.floor(Math.random()*5)],r:Math.random()*6}));let f=0;
  (function a(){x.clearRect(0,0,c.width,c.height);ps.forEach(p=>{p.y+=p.v;p.x+=Math.sin(p.y/30+p.r);x.fillStyle=p.c;x.fillRect(p.x,p.y,p.s,p.s)});if(++f<150)requestAnimationFrame(a);else x.clearRect(0,0,c.width,c.height)})()}
 drawPlaces();
+CrowdVote.on(s=>{$("vstat").textContent=s.total+" vote"+(s.total===1?"":"s")+" cast so far · results show live on the showcase"});CrowdVote.start();
 </script></body></html>

@@ -1,0 +1,86 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Crowd vote | Space Apps Kumasi</title>
+<style>
+:root{--navy:#07173f;--blue:#0042a6;--neon:#eafe07;--sky:#e9f2ff}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,Segoe UI,Roboto,sans-serif;background:var(--navy);color:#fff}
+header{padding:20px 18px 10px}header small{letter-spacing:.14em;text-transform:uppercase;color:var(--neon);font-weight:700}
+header h1{margin:4px 0 6px;font-size:clamp(26px,7vw,40px)}header p{margin:0;max-width:640px;opacity:.85;line-height:1.4}
+main{max-width:900px;margin:0 auto;padding:10px 16px 40px}a{color:var(--neon)}
+.live{display:flex;justify-content:space-between;align-items:center;gap:10px;background:#0b2a6b;border-radius:12px;padding:10px 14px;margin-bottom:14px;font-size:14px;flex-wrap:wrap}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#4ade80;box-shadow:0 0 8px #4ade80;margin-right:5px;animation:pulse 1.5s infinite}
+@keyframes pulse{50%{opacity:.4}}
+.lead{background:linear-gradient(135deg,#0b2a6b,#07173f);border:1px solid #24427f;border-radius:14px;padding:14px 16px;margin-bottom:14px;font-size:17px}
+.lead b{color:var(--neon)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.t{border:1px solid #24427f;background:#0a1d47;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:7px;transition:border-color .2s,box-shadow .2s}
+.t.mine{border-color:var(--neon);box-shadow:0 0 0 2px rgba(234,254,7,.25)}
+.t.wait{opacity:.5}
+.t .tn{font-size:12px;letter-spacing:.1em;text-transform:uppercase;opacity:.75}
+.t h2{margin:0;font-size:22px}
+.t .nm{font-size:14px;opacity:.8;min-height:20px}
+.cnt{display:flex;justify-content:space-between;font-size:13px}
+.track{height:8px;background:#13275a;border-radius:99px;overflow:hidden}
+.track i{display:block;height:100%;width:0;background:var(--neon);border-radius:99px;transition:width .5s}
+.vbtn{margin-top:4px;border:0;border-radius:999px;padding:12px;font:inherit;font-weight:800;background:var(--neon);color:var(--navy);cursor:pointer}
+.t.mine .vbtn{background:#fff}
+.t.wait .vbtn{cursor:not-allowed}
+.msg{min-height:22px;color:var(--neon);font-size:14px;margin:12px 0 4px}
+.note{opacity:.72;font-size:13px;line-height:1.5}
+footer{max-width:900px;margin:0 auto;padding:0 16px 32px;font-size:12px;opacity:.65;line-height:1.5}
+</style></head><body>
+<header><small>Space Apps Kumasi · Sprint</small><h1>🗳️ Crowd vote</h1><p>Pick the team you liked best. One vote per device — tap another card to change it, or tap your choice again to undo it. Results appear live on the Showcase.</p></header>
+<main>
+<div class="live"><span><i class="dot"></i><b id="live">Connecting…</b></span><a href="showcase.html">Open the showcase →</a></div>
+<div class="lead" id="lead">Counting votes…</div>
+<div class="grid" id="grid"></div>
+<p class="msg" id="msg"></p>
+<p class="note">Votes are anonymous and tied to a random id stored on this device. This is a fun sprint poll for the Crowd Favourite award, not an official NASA result.</p>
+<p class="note"><a href="index.html">← Back to Mars Lab</a></p>
+</main>
+<footer>Space Apps Kumasi is a locally organised event held under the NASA Space Apps Challenge programme. Taking part is not affiliation with, sponsorship by, or endorsement from NASA or any space agency partner.</footer>
+<script src="vote.js"></script>
+<script>
+var N=CrowdVote.N,$=function(id){return document.getElementById(id)},teams={},last={counts:new Array(N+1).fill(0),total:0,mine:0};
+for(var i=1;i<=N;i++)teams[i]={ok:false,name:"Team "+i};
+
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+function nameFrom(title){
+  if(!title)return "";
+  var parts=title.replace(/\s+/g," ").split(/\||\/\/|—|–|·/).map(function(x){return x.trim()}).filter(Boolean);
+  var s=parts.length?parts[parts.length-1]:"";
+  return s.length>=2&&s.length<=28?s:"";
+}
+async function loadTeams(){
+  await Promise.all(Array.from({length:N},async function(_,k){
+    var n=k+1;
+    try{
+      var r=await fetch("features/team-"+n+".html?cb="+Date.now(),{cache:"no-store"}),t=await r.text();
+      var m=t.match(/<title>([\s\S]*?)<\/title>/i),nm=nameFrom(m&&m[1]);
+      teams[n]={ok:r.ok&&!t.includes("TEAM_PLACEHOLDER"),name:nm||"Team "+n};
+    }catch(e){teams[n]={ok:false,name:"Team "+n}}
+  }));
+  render();
+}
+function render(){
+  var s=last,order=Array.from({length:N},function(_,i){return i+1}).sort(function(a,b){return (s.counts[b]||0)-(s.counts[a]||0)||a-b}),lead=order[0];
+  $("live").textContent=s.total+" vote"+(s.total===1?"":"s")+" cast";
+  $("lead").innerHTML=s.total?("🏆 Leading: <b>Team "+lead+"</b> — "+(s.counts[lead]||0)+" vote"+((s.counts[lead]||0)===1?"":"s")):"No votes yet — be the first";
+  $("grid").innerHTML=Array.from({length:N},function(_,k){
+    var n=k+1,t=teams[n],c=s.counts[n]||0,pct=s.total?Math.round(100*c/s.total):0,mine=s.mine===n;
+    return '<div class="t '+(mine?"mine ":"")+(t.ok?"":"wait")+'">'+
+      '<div class="tn">Team '+n+'</div><h2>'+esc(t.name)+'</h2>'+
+      '<div class="cnt"><span>'+(t.ok?"Submitted":"Awaiting submission")+'</span><b>'+c+' vote'+(c===1?"":"s")+'</b></div>'+
+      '<div class="track"><i style="width:'+pct+'%"></i></div>'+
+      '<button class="vbtn" data-n="'+n+'"'+((t.ok||mine)?"":" disabled")+'>'+(mine?"✓ Your vote — tap to undo":(t.ok?"Vote for this team":"Not available yet"))+'</button></div>';
+  }).join("");
+}
+$("grid").onclick=function(e){
+  var b=e.target.closest("button[data-n]");if(!b||b.disabled)return;
+  var n=+b.getAttribute("data-n");if(!teams[n].ok&&CrowdVote.mine()!==n)return;
+  CrowdVote.cast(CrowdVote.mine()===n?0:n).then(function(ok){
+    $("msg").textContent=ok?(CrowdVote.mine()?"Vote counted for Team "+n+".":"Vote removed."):"Could not send — check your connection and try again.";
+  });
+};
+CrowdVote.on(function(s){last=s;render()});
+CrowdVote.start();
+loadTeams();
+</script></body></html>

@@ -12,6 +12,9 @@ main{max-width:1100px;margin:0 auto;padding:10px 16px 40px}
 #fsx{position:fixed;top:10px;right:10px;z-index:50;background:var(--neon);color:var(--navy);border:0;border-radius:999px;padding:10px 16px;font-weight:800;display:none}
 .aw{margin-top:24px;background:#0b2a6b;border-radius:16px;padding:16px}.aw h2{margin:0 0 6px;color:var(--neon)}
 .ar{display:grid;grid-template-columns:1.2fr 1fr auto;gap:8px;margin:8px 0;align-items:center}.ar select{padding:10px;border-radius:10px;border:0;font:inherit}.ar button{background:var(--neon);color:var(--navy);border:0;border-radius:999px;padding:10px 16px;font-weight:800}
+.crowd{background:#07173f;border:1px solid #24427f;border-radius:12px;padding:12px;margin-bottom:14px}
+.cr{display:grid;grid-template-columns:82px 1fr 32px;gap:8px;align-items:center;font-size:13px;margin:8px 0}
+.ct{height:9px;background:#13275a;border-radius:99px;overflow:hidden}.ct i{display:block;height:100%;width:0;background:var(--neon);border-radius:99px;transition:width .5s}
 #ov{position:fixed;inset:0;background:rgba(7,23,63,.96);z-index:60;display:none;align-items:center;justify-content:center;text-align:center;flex-direction:column;padding:20px}
 #ov .t{font-size:clamp(22px,5vw,34px);color:var(--neon);letter-spacing:.1em;text-transform:uppercase;font-weight:800}#ov .w{font-size:clamp(46px,12vw,110px);font-weight:900;margin:10px 0}#ov .e{font-size:clamp(60px,14vw,140px)}
 canvas{position:fixed;inset:0;pointer-events:none;z-index:70}
@@ -22,21 +25,30 @@ footer{max-width:1100px;margin:0 auto;padding:0 16px 40px;font-size:12px;opacity
 <div class="tabs" id="tabs"></div>
 <div class="tools"><button id="rf">Check for new submissions</button><button id="fs">Full screen</button><span id="st" style="align-self:center;opacity:.8"></span></div>
 <iframe id="stage" sandbox="allow-scripts" title="Team page"></iframe>
-<section class="aw"><h2>Awards</h2><p style="margin:0 0 8px;opacity:.85">Choose the winner and reveal it on the big screen.</p><div id="awards"></div></section>
+<section class="aw"><h2>Awards</h2><p style="margin:0 0 8px;opacity:.85">Choose the winner and reveal it on the big screen.</p>
+<div class="crowd"><b style="color:var(--neon)">🗳️ Crowd vote — live</b> <span id="cs" style="opacity:.85;font-size:13px"></span><div id="cbars"></div><p style="margin:8px 0 0;opacity:.8;font-size:13px">Votes from phones, one per device. <a href="vote.html">Open the voting page</a> to take part.</p></div>
+<div id="awards"></div></section>
 </main>
-<footer>Space Apps Kumasi is a locally organised event held under the NASA Space Apps Challenge programme. Taking part is not affiliation with, sponsorship by, or endorsement from NASA or any space agency partner. Sprint awards are not NASA awards. <a href="index.html">Mars Lab</a> · <a href="wall.html">Launch wall</a></footer>
+<footer>Space Apps Kumasi is a locally organised event held under the NASA Space Apps Challenge programme. Taking part is not affiliation with, sponsorship by, or endorsement from NASA or any space agency partner. Sprint awards are not NASA awards. <a href="index.html">Mars Lab</a> · <a href="wall.html">Launch wall</a> · <a href="vote.html">Crowd vote</a></footer>
 <button id="fsx">Close full screen</button>
 <div id="ov"><div class="e" id="oe">🏆</div><div class="t" id="ot"></div><div class="w" id="ow"></div><button class="big" id="oc" style="background:#eafe07;color:#07173f;border:0;border-radius:999px;padding:12px 24px;font-weight:800;font-size:18px">Close</button></div>
 <canvas id="cf"></canvas>
+<script src="vote.js"></script>
 <script>
 const N=6,AW=[["🏆","Best Overall"],["📊","Best Evidence"],["🎤","Best Pitch"],["💻","Best Build"],["🎨","Most Creative"],["👏","Crowd Favourite"]];
 const st={},$=id=>document.getElementById(id);let cur=0;
+
+function crowd(s){$("cs").textContent=s.total+" vote"+(s.total===1?"":"s")+" cast";
+ const order=Array.from({length:N},(_,i)=>i+1).sort((a,b)=>(s.counts[b]||0)-(s.counts[a]||0)||a-b),lead=order[0];
+ $("cbars").innerHTML=order.slice(0,3).map((n,i)=>'<div class="cr"><span>'+(i===0?'🏆 ':'')+'Team '+n+'</span><div class="ct"><i style="width:'+(s.total?Math.round(100*(s.counts[n]||0)/s.total):0)+'%"></i></div><b>'+(s.counts[n]||0)+'</b></div>').join("");
+ const cw=$("cw"),lc=s.counts[lead]||0;if(cw)cw.textContent=s.total?"Crowd pick: Team "+lead+" ("+lc+" vote"+(lc===1?"":"s")+")":"No votes yet";}
+CrowdVote.on(crowd);CrowdVote.start();
 function tabs(){$("tabs").innerHTML=Array.from({length:N},(_,i)=>'<button class="'+(cur===i+1?'on ':'')+(st[i+1]==="ok"?'ok':st[i+1]==="no"?'no':'')+'" onclick="show('+(i+1)+')">Team '+(i+1)+'</button>').join("")}
 async function check(){$("st").textContent="Checking GitHub...";await Promise.all(Array.from({length:N},async(_,i)=>{try{const r=await fetch("features/team-"+(i+1)+".html?cb="+Date.now(),{cache:"no-store"});const t=await r.text();st[i+1]=(r.ok&&!t.includes("TEAM_PLACEHOLDER"))?"ok":"no"}catch(e){st[i+1]="no"}}));
  const n=Object.values(st).filter(x=>x==="ok").length;$("st").textContent=n+" of "+N+" teams have submitted";tabs();if(cur)show(cur)}
 function show(n){cur=n;tabs();$("stage").src="features/team-"+n+".html?cb="+Date.now()}
 $("rf").onclick=check;$("fs").onclick=()=>{$("stage").classList.add("full");$("fsx").style.display="block"};$("fsx").onclick=()=>{$("stage").classList.remove("full");$("fsx").style.display="none"};
-$("awards").innerHTML=AW.map((a,i)=>'<div class="ar"><b>'+a[0]+' '+a[1]+'</b><select id="s'+i+'"><option value="">Choose a team</option>'+Array.from({length:N},(_,k)=>'<option>Team '+(k+1)+'</option>').join("")+'</select><button onclick="reveal('+i+')">Reveal</button></div>').join("");
+$("awards").innerHTML=AW.map((a,i)=>'<div class="ar"><b>'+a[0]+' '+a[1]+(i===5?' <small id="cw" style="color:var(--neon);font-size:11px"></small>':'')+'</b><select id="s'+i+'"><option value="">Choose a team</option>'+Array.from({length:N},(_,k)=>'<option>Team '+(k+1)+'</option>').join("")+'</select><button onclick="reveal('+i+')">Reveal</button></div>').join("");
 function reveal(i){const v=$("s"+i).value;if(!v){alert("Choose a team first.");return}$("oe").textContent=AW[i][0];$("ot").textContent=AW[i][1];$("ow").textContent=v;$("ov").style.display="flex";confetti()}
 $("oc").onclick=()=>{$("ov").style.display="none"};
 function confetti(){const c=$("cf"),x=c.getContext("2d");c.width=innerWidth;c.height=innerHeight;const cl=["#eafe07","#0042a6","#fff","#2e96f5","#ff636e"];
