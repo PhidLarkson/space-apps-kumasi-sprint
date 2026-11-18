@@ -4,3 +4,1134 @@
 <body><!-- TEAM_PLACEHOLDER -->
 <div><h1>Team 1</h1><p>Nothing submitted yet. Paste your code over this whole file on GitHub to appear here.</p></div>
 </body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>NASA Space Apps — Mars Lab | Group1</title>
+<style>
+  :root {
+    --bg: #05070e;
+    --card: #0c1222;
+    --card-border: #1b2847;
+    --neon: #eafe07;
+    --blue: #0042a6;
+    --blue-glow: #1a6dff;
+    --mars: #ff5722;
+    --text: #eef3ff;
+    --muted: #8b9bc0;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    background-color: var(--bg);
+    background-image: 
+      radial-gradient(circle at 80% 10%, rgba(0, 66, 166, 0.28) 0%, transparent 45%),
+      radial-gradient(circle at 15% 85%, rgba(234, 254, 7, 0.08) 0%, transparent 40%),
+      linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 100% 100%, 100% 100%, 24px 24px, 24px 24px;
+    color: var(--text);
+    font-family: 'Courier New', Courier, monospace;
+    line-height: 1.4;
+    overflow-x: hidden;
+    padding: 12px;
+    max-width: 480px;
+    margin: 0 auto;
+    animation: fadeIn 0.7s ease-out forwards;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Retro NASA Control Header */
+  .top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--blue);
+    border: 1px solid var(--neon);
+    border-radius: 12px;
+    padding: 8px 12px;
+    margin-bottom: 12px;
+    box-shadow: 0 0 15px rgba(0, 66, 166, 0.6);
+  }
+
+  .badge {
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .pulse-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--neon);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--neon);
+    animation: pulse 1.5s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.8); }
+  }
+
+  .team-tag {
+    background: var(--neon);
+    color: #05070e;
+    font-weight: 900;
+    font-size: 12px;
+    padding: 2px 8px;
+    border-radius: 6px;
+  }
+
+  /* Headline */
+  .hero {
+    margin-bottom: 14px;
+  }
+
+  .hero h1 {
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 21px;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -0.3px;
+  }
+
+  .hero h1 span {
+    color: var(--neon);
+    text-shadow: 0 0 12px rgba(234, 254, 7, 0.35);
+  }
+
+  .sub-status {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* Cards */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 14px;
+    margin-bottom: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    border-bottom: 1px dashed rgba(139, 155, 192, 0.25);
+    padding-bottom: 6px;
+  }
+
+  .card-title {
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--neon);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+  }
+
+  .card-meta {
+    font-size: 10px;
+    color: var(--muted);
+  }
+
+  /* 3D Canvas Viewport */
+  .sim-container {
+    position: relative;
+    width: 100%;
+    height: 185px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(234, 254, 7, 0.3);
+    background: #030408;
+    touch-action: pan-y;
+  }
+
+  #mars3d {
+    width: 100%;
+    height: 100%;
+    display: block;
+    cursor: grab;
+  }
+
+  .sim-hud {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    right: 8px;
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+    font-size: 10px;
+    color: var(--neon);
+    text-shadow: 0 1px 3px #000;
+  }
+
+  .sim-bottom-hud {
+    position: absolute;
+    bottom: 6px;
+    left: 8px;
+    right: 8px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: rgba(255,255,255,0.75);
+    pointer-events: none;
+  }
+
+  /* Location Selector Pills */
+  .place-tabs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+
+  .place-btn {
+    background: #090e1a;
+    border: 1px solid var(--card-border);
+    color: var(--muted);
+    border-radius: 12px;
+    padding: 8px 4px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+  }
+
+  .place-btn.active {
+    background: rgba(0, 66, 166, 0.45);
+    border-color: var(--neon);
+    color: #fff;
+    box-shadow: 0 0 12px rgba(234, 254, 7, 0.2);
+  }
+
+  .place-rank {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: bold;
+    background: var(--blue);
+    color: var(--neon);
+    padding: 1px 5px;
+    border-radius: 4px;
+    margin-bottom: 3px;
+  }
+
+  .place-btn.active .place-rank {
+    background: var(--neon);
+    color: #05070e;
+  }
+
+  .place-name {
+    display: block;
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .place-score-mini {
+    font-size: 11px;
+    color: var(--neon);
+    font-weight: bold;
+  }
+
+  /* Month Slider Control */
+  .slider-box {
+    background: rgba(0, 66, 166, 0.18);
+    border: 1px solid rgba(0, 66, 166, 0.5);
+    border-radius: 12px;
+    padding: 10px;
+    margin-bottom: 12px;
+  }
+
+  .slider-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+    font-size: 12px;
+  }
+
+  .month-label {
+    font-weight: bold;
+    color: var(--neon);
+    font-size: 14px;
+  }
+
+  input[type="range"] {
+    width: 100%;
+    -webkit-appearance: none;
+    background: #16223d;
+    height: 6px;
+    border-radius: 4px;
+    outline: none;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--neon);
+    border: 2px solid #05070e;
+    box-shadow: 0 0 10px var(--neon);
+    cursor: pointer;
+  }
+
+  /* Big Score & Gauges */
+  .score-hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .big-score-wrap {
+    flex: 1;
+  }
+
+  .big-score-num {
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 42px;
+    font-weight: 900;
+    color: var(--neon);
+    line-height: 1;
+    letter-spacing: -1px;
+  }
+
+  .big-score-unit {
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: normal;
+  }
+
+  .gauges-wrap {
+    flex: 1.3;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .gauge-row {
+    font-size: 11px;
+  }
+
+  .gauge-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 3px;
+    color: var(--text);
+  }
+
+  .bar-track {
+    width: 100%;
+    height: 8px;
+    background: #151f38;
+    border-radius: 99px;
+    overflow: hidden;
+  }
+
+  .bar-fill {
+    height: 100%;
+    border-radius: 99px;
+    width: 0%;
+    transition: width 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .fill-cold { background: linear-gradient(90deg, #0042a6, #38bdf8); }
+  .fill-dry { background: linear-gradient(90deg, #b45309, var(--neon)); }
+
+  /* Telemetry Metrics Grid */
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .metric-box {
+    background: #080d19;
+    border: 1px solid #16213e;
+    border-radius: 10px;
+    padding: 8px 6px;
+    text-align: center;
+  }
+
+  .metric-val {
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 16px;
+    font-weight: 800;
+    color: #fff;
+  }
+
+  .metric-lbl {
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  /* Extremes Summary */
+  .extremes-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    font-size: 11px;
+  }
+
+  .ext-item {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+    padding: 6px 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .ext-item span:first-child { color: var(--muted); }
+  .ext-item strong { color: var(--neon); font-size: 11px; }
+
+  /* Chart */
+  #tempChart {
+    width: 100%;
+    height: 155px;
+    display: block;
+  }
+
+  .legend {
+    display: flex;
+    justify-content: space-around;
+    font-size: 10px;
+    margin-top: 6px;
+    color: var(--muted);
+  }
+
+  .legend span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .dot-swatch {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  /* Ranking List */
+  .rank-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 10px;
+    background: #080d19;
+    border-radius: 10px;
+    margin-bottom: 6px;
+    border-left: 3px solid var(--blue);
+    font-size: 12px;
+  }
+
+  .rank-row.winner {
+    border-left-color: var(--neon);
+    background: rgba(234, 254, 7, 0.06);
+  }
+
+  /* Formula & Footer Controls */
+  .formula-box {
+    font-size: 10px;
+    color: var(--muted);
+    background: #070b14;
+    border: 1px dashed #23335c;
+    border-radius: 10px;
+    padding: 8px 10px;
+    margin-bottom: 10px;
+    line-height: 1.45;
+  }
+
+  .refresh-btn {
+    width: 100%;
+    background: var(--blue);
+    color: var(--neon);
+    border: 1px solid var(--neon);
+    border-radius: 12px;
+    padding: 11px;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: transform 0.15s ease, background 0.2s ease;
+  }
+
+  .refresh-btn:active {
+    transform: scale(0.98);
+    background: #0054d1;
+  }
+
+  .refresh-btn:disabled {
+    opacity: 0.6;
+    cursor: wait;
+  }
+</style>
+</head>
+<body>
+
+  <header class="top-bar">
+    <div class="badge"><span class="pulse-dot"></span> NASA MARS LAB // TELEMETRY</div>
+    <div class="team-tag">Group1</div>
+  </header>
+
+  <section class="hero">
+    <h1 id="headline">Group1 Mars Lab: <span>Atacama Desert</span> Leads Analog Match</h1>
+    <div class="sub-status" id="apiStatus">NASA POWER 2025 ARCHIVE • LOCAL ANALOG ENGINE ACTIVE</div>
+  </section>
+
+  <!-- 3D Martian Surface Simulation -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">3D Martian Surface Sim</span>
+      <span class="card-meta" id="simCoord">LAT -22.90° LON -68.20°</span>
+    </div>
+    <div class="sim-container">
+      <canvas id="mars3d"></canvas>
+      <div class="sim-hud">
+        <span id="simZoneLabel">ANALOG: ATACAMA DESERT</span>
+        <span id="simTerrainMode">ARIDITY: 98%</span>
+      </div>
+      <div class="sim-bottom-hud">
+        <span>DRAG TO ROTATE TERRAIN</span>
+        <span id="simSolarHud">SOLAR: 7.11 kWh/m²</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive Site & Time Selector -->
+  <div class="place-tabs" id="placeTabs"></div>
+
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title" id="activeSiteTitle">Atacama Desert — 2025 Annual</span>
+      <span class="card-meta" id="activeRankBadge">RANK #1</span>
+    </div>
+
+    <div class="slider-box">
+      <div class="slider-header">
+        <span>TIME WINDOW (TAP/SLIDE)</span>
+        <span class="month-label" id="monthLabel">2025 ANNUAL AVG</span>
+      </div>
+      <input type="range" id="monthSlider" min="0" max="12" value="0" step="1" aria-label="Select Annual or Month">
+      <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--muted);margin-top:4px;">
+        <span>YEAR</span><span>JAN</span><span>MAR</span><span>MAY</span><span>JUL</span><span>SEP</span><span>DEC</span>
+      </div>
+    </div>
+
+    <div class="score-hero">
+      <div class="big-score-wrap">
+        <div style="font-size:10px;color:var(--muted);margin-bottom:2px;">MARS-LIKENESS</div>
+        <div class="big-score-num"><span id="scoreDisplay">0.0</span><span class="big-score-unit">/100</span></div>
+      </div>
+      <div class="gauges-wrap">
+        <div class="gauge-row">
+          <div class="gauge-label"><span>COLDNESS (50%)</span><strong id="coldPct">0%</strong></div>
+          <div class="bar-track"><div class="bar-fill fill-cold" id="coldBar"></div></div>
+        </div>
+        <div class="gauge-row">
+          <div class="gauge-label"><span>DRYNESS (50%)</span><strong id="dryPct">0%</strong></div>
+          <div class="bar-track"><div class="bar-fill fill-dry" id="dryBar"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="metrics-grid">
+      <div class="metric-box">
+        <div class="metric-val" id="valTemp">--°C</div>
+        <div class="metric-lbl">TEMP (2M)</div>
+      </div>
+      <div class="metric-box">
+        <div class="metric-val" id="valRain">-- mm</div>
+        <div class="metric-lbl">RAIN / DAY</div>
+      </div>
+      <div class="metric-box">
+        <div class="metric-val" id="valSun">-- kWh</div>
+        <div class="metric-lbl">SUN / M²</div>
+      </div>
+    </div>
+
+    <div class="extremes-grid" id="extremesGrid"></div>
+  </div>
+
+  <!-- 12-Month Temperature Chart -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">2025 Thermal Profile (°C)</span>
+      <span class="card-meta">JAN – DEC</span>
+    </div>
+    <canvas id="tempChart"></canvas>
+    <div class="legend">
+      <span><i class="dot-swatch" style="background:#eafe07"></i>Atacama</span>
+      <span><i class="dot-swatch" style="background:#38bdf8"></i>Kumasi</span>
+      <span><i class="dot-swatch" style="background:#ff5722"></i>Lake Bosomtwe</span>
+    </div>
+  </div>
+
+  <!-- Annual Ranking Card -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">Annual Analog Ranking</span>
+      <span class="card-meta">MOST TO LEAST MARS-LIKE</span>
+    </div>
+    <div id="rankingList"></div>
+  </div>
+
+  <!-- Formula & NASA Refresh -->
+  <div class="formula-box">
+    <strong>FORMULA:</strong> Mars-likeness = 50% × coldness + 50% × dryness, where <code>coldness = clamp((25 - t) / 45, 0, 1)</code> and <code>dryness = clamp(1 - r / 5, 0, 1)</code>. Source: NASA POWER (2025).
+  </div>
+
+  <button class="refresh-btn" id="refreshBtn">↻ REFRESH FROM NASA POWER API</button>
+
+<script>
+const DATA = [{"name":"Kumasi","lat":6.67,"lon":-1.57,"annual":{"t":25.84,"r":4.93,"s":4.58},"monthly":{"t":[26.25,27.32,27.26,27.29,26.28,25.37,24.29,24.38,25.14,25.42,25.79,25.45],"r":[1.08,2.25,2.94,3.67,8.23,9.73,1.91,2.13,9.3,10.35,5.19,2.41],"s":[5.19,5.02,5.04,5.01,5.03,4.61,3.82,3.48,3.92,4.62,4.84,4.44]}},{"name":"Lake Bosomtwe","lat":6.5,"lon":-1.41,"annual":{"t":26.02,"r":4.42,"s":4.58},"monthly":{"t":[26.53,27.52,27.56,27.6,26.44,25.42,24.5,24.66,25.26,25.39,25.84,25.63],"r":[1.1,1.94,2.5,3.34,6.29,8.33,1.8,2.97,9.28,8.94,4.6,1.99],"s":[5.19,5.02,5.04,5.01,5.03,4.61,3.82,3.48,3.92,4.62,4.84,4.44]}},{"name":"Atacama Desert","lat":-22.9,"lon":-68.2,"annual":{"t":14.22,"r":0.1,"s":7.11},"monthly":{"t":[18.06,19,16.64,13.9,13.22,8.42,10.99,9.92,13.51,14.58,16.24,16.47],"r":[0.03,0.86,0.04,0.01,0,0.13,0.02,0,0.01,0.01,0.07,0.07],"s":[8.82,7.17,7.54,6.43,5.4,4.78,5.14,6.25,7.18,8.63,9,8.97]}}];
+
+const MONTHS = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+let computed = [];
+let selectedIndex = 0; // Index in ranked array
+let selectedMonth = 0; // 0 = Annual, 1..12 = Jan..Dec
+let displayedScore = 0;
+let animFrameScore = null;
+
+function clamp(val, min, max) {
+  return Math.max(min, Math.min(max, val));
+}
+
+function calcMarsMetrics(t, r) {
+  const coldness = clamp((25 - t) / 45, 0, 1);
+  const dryness = clamp(1 - r / 5, 0, 1);
+  const score = (0.5 * coldness + 0.5 * dryness) * 100;
+  return { coldness, dryness, score };
+}
+
+function processAllData() {
+  computed = DATA.map(place => {
+    const ann = calcMarsMetrics(place.annual.t, place.annual.r);
+    const monthlyScores = place.monthly.t.map((tVal, i) => {
+      return calcMarsMetrics(tVal, place.monthly.r[i]);
+    });
+
+    let coldestIdx = 0, hottestIdx = 0, wettestIdx = 0, sunniestIdx = 0;
+    for (let i = 1; i < 12; i++) {
+      if (place.monthly.t[i] < place.monthly.t[coldestIdx]) coldestIdx = i;
+      if (place.monthly.t[i] > place.monthly.t[hottestIdx]) hottestIdx = i;
+      if (place.monthly.r[i] > place.monthly.r[wettestIdx]) wettestIdx = i;
+      if (place.monthly.s[i] > place.monthly.s[sunniestIdx]) sunniestIdx = i;
+    }
+
+    const tempRange = +(place.monthly.t[hottestIdx] - place.monthly.t[coldestIdx]).toFixed(2);
+
+    return {
+      ...place,
+      annMetrics: ann,
+      monthlyMetrics: monthlyScores,
+      extremes: {
+        coldest: `${MONTHS[coldestIdx]} (${place.monthly.t[coldestIdx]}°C)`,
+        hottest: `${MONTHS[hottestIdx]} (${place.monthly.t[hottestIdx]}°C)`,
+        wettest: `${MONTHS[wettestIdx]} (${place.monthly.r[wettestIdx]}mm)`,
+        sunniest: `${MONTHS[sunniestIdx]} (${place.monthly.s[sunniestIdx]}kWh)`,
+        range: `${tempRange}°C`
+      }
+    };
+  });
+
+  // Rank from most to least Mars-like based on annual score
+  computed.sort((a, b) => b.annMetrics.score - a.annMetrics.score);
+}
+
+function animateScoreTo(target) {
+  if (animFrameScore) cancelAnimationFrame(animFrameScore);
+  const start = displayedScore;
+  const startTime = performance.now();
+  const duration = 450;
+
+  function step(now) {
+    const progress = Math.min((now - startTime) / duration, 1);
+    const ease = 1 - Math.pow(1 - progress, 3);
+    displayedScore = start + (target - start) * ease;
+    document.getElementById("scoreDisplay").textContent = displayedScore.toFixed(1);
+    if (progress < 1) {
+      animFrameScore = requestAnimationFrame(step);
+    } else {
+      displayedScore = target;
+    }
+  }
+  animFrameScore = requestAnimationFrame(step);
+}
+
+function renderTabsAndRanking() {
+  const tabsEl = document.getElementById("placeTabs");
+  const rankEl = document.getElementById("rankingList");
+  tabsEl.innerHTML = "";
+  rankEl.innerHTML = "";
+
+  // Update headline with Team Name and winning place
+  const winner = computed[0];
+  document.getElementById("headline").innerHTML = `Group1 Mars Lab: <span>${winner.name}</span> Leads Analog Match`;
+
+  computed.forEach((place, idx) => {
+    // Tab button
+    const btn = document.createElement("button");
+    btn.className = "place-btn" + (idx === selectedIndex ? " active" : "");
+    btn.innerHTML = `
+      <span class="place-rank">#${idx + 1}</span>
+      <span class="place-name">${place.name}</span>
+      <span class="place-score-mini">${place.annMetrics.score.toFixed(1)}</span>
+    `;
+    btn.onclick = () => {
+      selectedIndex = idx;
+      renderTabsAndRanking();
+      updateDashboard();
+    };
+    tabsEl.appendChild(btn);
+
+    // Ranking row
+    const row = document.createElement("div");
+    row.className = "rank-row" + (idx === 0 ? " winner" : "");
+    row.innerHTML = `
+      <div>
+        <strong style="color:${idx === 0 ? 'var(--neon)' : '#fff'}">#${idx + 1} ${place.name}</strong>
+        <div style="font-size:10px;color:var(--muted)">Annual: ${place.annual.t}°C • ${place.annual.r} mm/d</div>
+      </div>
+      <div style="text-align:right">
+        <strong style="color:var(--neon);font-size:14px">${place.annMetrics.score.toFixed(1)}</strong>
+        <div style="font-size:9px;color:var(--muted)">SCORE</div>
+      </div>
+    `;
+    rankEl.appendChild(row);
+  });
+}
+
+function updateDashboard() {
+  const place = computed[selectedIndex];
+  const isAnnual = selectedMonth === 0;
+  const mIdx = selectedMonth - 1;
+
+  const t = isAnnual ? place.annual.t : place.monthly.t[mIdx];
+  const r = isAnnual ? place.annual.r : place.monthly.r[mIdx];
+  const s = isAnnual ? place.annual.s : place.monthly.s[mIdx];
+  const metrics = isAnnual ? place.annMetrics : place.monthlyMetrics[mIdx];
+
+  document.getElementById("activeSiteTitle").textContent = `${place.name} — ${isAnnual ? '2025 Annual' : MONTHS[mIdx] + ' 2025'}`;
+  document.getElementById("activeRankBadge").textContent = `ANNUAL RANK #${selectedIndex + 1}`;
+  document.getElementById("monthLabel").textContent = isAnnual ? "2025 ANNUAL AVG" : `${MONTHS[mIdx]} 2025`;
+
+  animateScoreTo(metrics.score);
+
+  const cPct = Math.round(metrics.coldness * 100);
+  const dPct = Math.round(metrics.dryness * 100);
+  document.getElementById("coldPct").textContent = `${cPct}%`;
+  document.getElementById("dryPct").textContent = `${dPct}%`;
+  document.getElementById("coldBar").style.width = `${cPct}%`;
+  document.getElementById("dryBar").style.width = `${dPct}%`;
+
+  document.getElementById("valTemp").textContent = `${t.toFixed(2)}°C`;
+  document.getElementById("valRain").textContent = `${r.toFixed(2)} mm`;
+  document.getElementById("valSun").textContent = `${s.toFixed(2)} kWh`;
+
+  document.getElementById("extremesGrid").innerHTML = `
+    <div class="ext-item"><span>Coldest:</span><strong>${place.extremes.coldest}</strong></div>
+    <div class="ext-item"><span>Hottest:</span><strong>${place.extremes.hottest}</strong></div>
+    <div class="ext-item"><span>Wettest:</span><strong>${place.extremes.wettest}</strong></div>
+    <div class="ext-item"><span>Sunniest:</span><strong>${place.extremes.sunniest}</strong></div>
+    <div class="ext-item" style="grid-column:span 2"><span>Annual Temp Range:</span><strong>${place.extremes.range}</strong></div>
+  `;
+
+  // Update 3D HUD & parameters
+  document.getElementById("simCoord").textContent = `LAT ${place.lat.toFixed(2)}° LON ${place.lon.toFixed(2)}°`;
+  document.getElementById("simZoneLabel").textContent = `ANALOG: ${place.name.toUpperCase()}`;
+  document.getElementById("simTerrainMode").textContent = `DRYNESS: ${dPct}%`;
+  document.getElementById("simSolarHud").textContent = `SOLAR: ${s.toFixed(2)} kWh/m²`;
+
+  simState.dryness = metrics.dryness;
+  simState.coldness = metrics.coldness;
+  simState.sun = s;
+
+  drawTempChart();
+}
+
+/* =========================================
+   3D MARTIAN TERRAIN SIMULATION (PURE CANVAS)
+   ========================================= */
+const simState = {
+  angleY: 0.4,
+  pitch: 0.52,
+  dryness: 0.98,
+  coldness: 0.24,
+  sun: 7.11,
+  dragging: false,
+  lastX: 0
+};
+
+function init3DSim() {
+  const canvas = document.getElementById("mars3d");
+  const ctx = canvas.getContext("2d");
+
+  function resize() {
+    const rect = canvas.parentElement.getBoundingClientRect();
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = rect.width * dpr;
+    canvas.height = rect.height * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  resize();
+  window.addEventListener("resize", resize);
+
+  // Touch & Mouse rotation
+  const startDrag = (x) => { simState.dragging = true; simState.lastX = x; };
+  const moveDrag = (x) => {
+    if (!simState.dragging) return;
+    simState.angleY += (x - simState.lastX) * 0.012;
+    simState.lastX = x;
+  };
+  const endDrag = () => { simState.dragging = false; };
+
+  canvas.addEventListener("mousedown", e => startDrag(e.clientX));
+  window.addEventListener("mousemove", e => moveDrag(e.clientX));
+  window.addEventListener("mouseup", endDrag);
+
+  canvas.addEventListener("touchstart", e => {
+    if (e.touches.length) startDrag(e.touches[0].clientX);
+  }, { passive: true });
+  canvas.addEventListener("touchmove", e => {
+    if (e.touches.length) moveDrag(e.touches[0].clientX);
+  }, { passive: true });
+  canvas.addEventListener("touchend", endDrag);
+
+  // Precompute 3D Martian crater & ridge heightmap
+  const gridN = 22;
+  const heights = [];
+  for (let z = 0; z < gridN; z++) {
+    heights[z] = [];
+    for (let x = 0; x < gridN; x++) {
+      const nx = (x / (gridN - 1)) * 2 - 1;
+      const nz = (z / (gridN - 1)) * 2 - 1;
+      // Central crater + procedural ridges
+      const dist = Math.hypot(nx - 0.15, nz + 0.1);
+      const crater = dist < 0.45 ? -Math.cos((dist / 0.45) * Math.PI * 0.5) * 0.35 : Math.exp(-Math.pow(dist - 0.5, 2) * 18) * 0.22;
+      const ridge = Math.sin(nx * 4.5) * Math.cos(nz * 4.2) * 0.16 + Math.sin((nx + nz) * 7) * 0.06;
+      heights[z][x] = crater + ridge;
+    }
+  }
+
+  // Stars & dust particles
+  const stars = Array.from({ length: 35 }, () => ({
+    x: Math.random(),
+    y: Math.random() * 0.45,
+    r: Math.random() * 1.3 + 0.4
+  }));
+  const dust = Array.from({ length: 18 }, () => ({
+    x: Math.random(),
+    y: 0.35 + Math.random() * 0.6,
+    sp: 0.002 + Math.random() * 0.004
+  }));
+
+  function loop() {
+    const w = canvas.clientWidth;
+    const h = canvas.clientHeight;
+    if (!simState.dragging) simState.angleY += 0.005;
+
+    ctx.clearRect(0, 0, w, h);
+
+    // Sky gradient reacting to solar intensity & dryness
+    const skyGrad = ctx.createLinearGradient(0, 0, 0, h);
+    skyGrad.addColorStop(0, "#040711");
+    skyGrad.addColorStop(0.55, simState.dryness > 0.6 ? "#2a120a" : "#0b1d3a");
+    skyGrad.addColorStop(1, "#090c14");
+    ctx.fillStyle = skyGrad;
+    ctx.fillRect(0, 0, w, h);
+
+    // Stars
+    ctx.fillStyle = "rgba(255,255,255,0.75)";
+    stars.forEach(st => {
+      ctx.beginPath();
+      ctx.arc(st.x * w, st.y * h, st.r, 0, Math.PI * 2);
+      ctx.fill();
+    });
+
+    // Distant Sun / Phobos orb scaled by solar irradiance
+    const sunRadius = 8 + (simState.sun / 9) * 10;
+    const sunX = w * 0.78;
+    const sunY = h * 0.24;
+    const glow = ctx.createRadialGradient(sunX, sunY, 1, sunX, sunY, sunRadius * 2.8);
+    glow.addColorStop(0, "rgba(234, 254, 7, 0.9)");
+    glow.addColorStop(0.4, "rgba(255, 110, 40, 0.3)");
+    glow.addColorStop(1, "rgba(255, 110, 40, 0)");
+    ctx.fillStyle = glow;
+    ctx.beginPath();
+    ctx.arc(sunX, sunY, sunRadius * 2.8, 0, Math.PI * 2);
+    ctx.fill();
+
+    // 3D Projection of Martian Mesh
+    const cosY = Math.cos(simState.angleY);
+    const sinY = Math.sin(simState.angleY);
+    const cosP = Math.cos(simState.pitch);
+    const sinP = Math.sin(simState.pitch);
+    const scale = Math.min(w, h) * 0.85;
+
+    const projected = [];
+    for (let z = 0; z < gridN; z++) {
+      projected[z] = [];
+      for (let x = 0; x < gridN; x++) {
+        const px = (x / (gridN - 1) - 0.5) * 2.1;
+        const pz = (z / (gridN - 1) - 0.5) * 2.1;
+        // Amplify terrain relief when dry
+        const py = heights[z][x] * (0.65 + simState.dryness * 0.75);
+
+        // Rotate Y
+        const rx = px * cosY - pz * sinY;
+        const rz = px * sinY + pz * cosY;
+        // Rotate X (pitch)
+        const ry = py * cosP - rz * sinP;
+        const finalZ = py * sinP + rz * cosP + 2.9;
+
+        const fov = scale / finalZ;
+        projected[z][x] = {
+          sx: w * 0.5 + rx * fov,
+          sy: h * 0.62 - ry * fov,
+          elev: py,
+          depth: finalZ
+        };
+      }
+    }
+
+    // Draw 3D wireframe + shaded facets
+    const rCol = Math.round(130 + simState.dryness * 125);
+    const gCol = Math.round(55 + (1 - simState.dryness) * 50);
+    const bCol = Math.round(45 + simState.coldness * 140);
+
+    for (let z = 0; z < gridN - 1; z++) {
+      for (let x = 0; x < gridN - 1; x++) {
+        const p1 = projected[z][x];
+        const p2 = projected[z][x + 1];
+        const p3 = projected[z + 1][x + 1];
+        const p4 = projected[z + 1][x];
+
+        const shade = clamp(0.45 + p1.elev * 1.4, 0.15, 1);
+        ctx.fillStyle = `rgba(${Math.round(rCol * shade)}, ${Math.round(gCol * shade)}, ${Math.round(bCol * shade)}, 0.42)`;
+        ctx.strokeStyle = simState.dryness > 0.5
+          ? `rgba(234, 254, 7, ${0.14 + shade * 0.25})`
+          : `rgba(56, 189, 248, ${0.18 + shade * 0.25})`;
+        ctx.lineWidth = 0.75;
+
+        ctx.beginPath();
+        ctx.moveTo(p1.sx, p1.sy);
+        ctx.lineTo(p2.sx, p2.sy);
+        ctx.lineTo(p3.sx, p3.sy);
+        ctx.lineTo(p4.sx, p4.sy);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+      }
+    }
+
+    // Animated Martian surface dust drift
+    ctx.fillStyle = "rgba(234, 254, 7, 0.35)";
+    dust.forEach(d => {
+      d.x = (d.x + d.sp) % 1;
+      ctx.fillRect(d.x * w, d.y * h, 2, 1.2);
+    });
+
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+}
+
+/* =========================================
+   12-MONTH TEMPERATURE LINE CHART
+   ========================================= */
+function drawTempChart() {
+  const canvas = document.getElementById("tempChart");
+  const ctx = canvas.getContext("2d");
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const rect = canvas.getBoundingClientRect();
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+  const w = rect.width;
+  const h = rect.height;
+  const pad = { top: 14, right: 12, bottom: 22, left: 30 };
+  const plotW = w - pad.left - pad.right;
+  const plotH = h - pad.top - pad.bottom;
+
+  ctx.clearRect(0, 0, w, h);
+
+  const minT = 5;
+  const maxT = 30;
+
+  // Grid lines
+  ctx.strokeStyle = "rgba(139, 155, 192, 0.16)";
+  ctx.fillStyle = "#8b9bc0";
+  ctx.font = "9px monospace";
+  ctx.lineWidth = 1;
+
+  for (let t = 5; t <= 30; t += 5) {
+    const y = pad.top + plotH - ((t - minT) / (maxT - minT)) * plotH;
+    ctx.beginPath();
+    ctx.moveTo(pad.left, y);
+    ctx.lineTo(w - pad.right, y);
+    ctx.stroke();
+    ctx.fillText(`${t}°`, 4, y + 3);
+  }
+
+  // Month labels
+  MONTHS.forEach((m, i) => {
+    if (i % 2 === 0 || i === 11) {
+      const x = pad.left + (i / 11) * plotW;
+      ctx.fillText(m, x - 9, h - 6);
+    }
+  });
+
+  // Highlight selected month vertical cursor
+  if (selectedMonth > 0) {
+    const selX = pad.left + ((selectedMonth - 1) / 11) * plotW;
+    ctx.strokeStyle = "rgba(234, 254, 7, 0.5)";
+    ctx.setLineDash([3, 3]);
+    ctx.beginPath();
+    ctx.moveTo(selX, pad.top);
+    ctx.lineTo(selX, pad.top + plotH);
+    ctx.stroke();
+    ctx.setLineDash([]);
+  }
+
+  const colors = {
+    "Atacama Desert": "#eafe07",
+    "Kumasi": "#38bdf8",
+    "Lake Bosomtwe": "#ff5722"
+  };
+
+  computed.forEach(place => {
+    const col = colors[place.name] || "#ffffff";
+    const isSelected = computed[selectedIndex].name === place.name;
+    ctx.strokeStyle = col;
+    ctx.lineWidth = isSelected ? 2.6 : 1.4;
+    ctx.globalAlpha = isSelected ? 1 : 0.6;
+
+    ctx.beginPath();
+    place.monthly.t.forEach((temp, i) => {
+      const x = pad.left + (i / 11) * plotW;
+      const y = pad.top + plotH - ((temp - minT) / (maxT - minT)) * plotH;
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    });
+    ctx.stroke();
+
+    // Draw point on active month
+    if (selectedMonth > 0) {
+      const i = selectedMonth - 1;
+      const x = pad.left + (i / 11) * plotW;
+      const y = pad.top + plotH - ((place.monthly.t[i] - minT) / (maxT - minT)) * plotH;
+      ctx.fillStyle = col;
+      ctx.beginPath();
+      ctx.arc(x, y, isSelected ? 4 : 2.5, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  });
+}
+
+/* =========================================
+   BONUS: LIVE REFRESH FROM NASA POWER API
+   ========================================= */
+async function refreshFromNasa() {
+  const btn = document.getElementById("refreshBtn");
+  const statusEl = document.getElementById("apiStatus");
+  btn.disabled = true;
+  btn.textContent = "SYNCING WITH NASA POWER SATELLITE...";
+
+  try {
+    const updates = await Promise.all(DATA.map(async (site) => {
+      const url = `https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,PRECTOTCORR,ALLSKY_SFC_SW_DWN&community=RE&longitude=${site.lon}&latitude=${site.lat}&start=2025&end=2025&format=JSON`;
+      const res = await fetch(url);
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      const json = await res.json();
+      const p = json.properties.parameter;
+
+      const tArr = [], rArr = [], sArr = [];
+      for (let m = 1; m <= 12; m++) {
+        const key = "2025" + String(m).padStart(2, "0");
+        tArr.push(Number(p.T2M[key]));
+        rArr.push(Number(p.PRECTOTCORR[key]));
+        sArr.push(Number(p.ALLSKY_SFC_SW_DWN[key]));
+      }
+
+      return {
+        ...site,
+        annual: {
+          t: Number(p.T2M["202513"]),
+          r: Number(p.PRECTOTCORR["202513"]),
+          s: Number(p.ALLSKY_SFC_SW_DWN["202513"])
+        },
+        monthly: { t: tArr, r: rArr, s: sArr }
+      };
+    }));
+
+    for (let i = 0; i < DATA.length; i++) {
+      DATA[i] = updates[i];
+    }
+
+    processAllData();
+    renderTabsAndRanking();
+    updateDashboard();
+    statusEl.textContent = "LIVE TELEMETRY VERIFIED • NASA POWER 2025";
+    statusEl.style.color = "var(--neon)";
+  } catch (err) {
+    statusEl.textContent = "OFFLINE / CORS FALLBACK • USING VERIFIED NASA ARCHIVE";
+    statusEl.style.color = "#ff8a65";
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "↻ REFRESH FROM NASA POWER API";
+  }
+}
+
+// Initialize
+document.getElementById("monthSlider").addEventListener("input", (e) => {
+  selectedMonth = parseInt(e.target.value, 10);
+  updateDashboard();
+});
+
+document.getElementById("refreshBtn").addEventListener("click", refreshFromNasa);
+window.addEventListener("resize", drawTempChart);
+
+processAllData();
+renderTabsAndRanking();
+init3DSim();
+updateDashboard();
+</script>
+</body>
+</html>
