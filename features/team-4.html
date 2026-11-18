@@ -1,6 +1,1590 @@
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<style>body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:#07173f;color:#fff;font-family:system-ui,sans-serif;text-align:center;padding:20px}h1{color:#eafe07}</style></head>
-<body><!-- TEAM_PLACEHOLDER -->
-<div><h1>Team 4</h1><p>Nothing submitted yet. Paste your code over this whole file on GitHub to appear here.</p></div>
-</body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>MARS LAB // CAN YOU OUTRUN IT? — FANTASTIC FOUR</title>
+<style>
+  :root {
+    --bg: #07090e;
+    --surface: #0e131d;
+    --surface-2: #141b29;
+    --border: #202b3d;
+    --yellow: #eafe07;
+    --yellow-dim: rgba(234, 254, 7, 0.14);
+    --blue: #0042a6;
+    --blue-bright: #2c7be5;
+    --blue-dim: rgba(0, 66, 166, 0.25);
+    --text: #eef3fb;
+    --muted: #8292ab;
+    --danger: #ff3b4e;
+    --danger-dim: rgba(255, 59, 78, 0.16);
+    --warn: #ffb020;
+    --ok: #29d67c;
+    --ease-snap: cubic-bezier(0.16, 1, 0.3, 1);
+    --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html, body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    line-height: 1.35;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    background-image:
+      radial-gradient(circle at 85% 6%, rgba(0, 66, 166, 0.28) 0%, transparent 45%),
+      radial-gradient(circle at 12% 32%, rgba(234, 254, 7, 0.06) 0%, transparent 40%),
+      linear-gradient(rgba(32, 43, 61, 0.22) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(32, 43, 61, 0.22) 1px, transparent 1px);
+    background-size: 100% 100%, 100% 100%, 24px 24px, 24px 24px;
+    padding: 12px 12px 28px;
+  }
+
+  .app {
+    max-width: 440px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    opacity: 0;
+    transform: translateY(8px);
+    animation: bootFade 420ms var(--ease-snap) forwards;
+  }
+
+  @keyframes bootFade {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Top Telemetry Bar */
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 8px 11px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+  }
+
+  .team-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--blue);
+    color: #fff;
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 4px 8px;
+    border-radius: 999px;
+    text-transform: uppercase;
+    border: 1px solid rgba(255,255,255,0.16);
+  }
+
+  .pulse-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--yellow);
+    box-shadow: 0 0 8px var(--yellow);
+    animation: blink 1.4s infinite steps(2, start);
+  }
+
+  @keyframes blink {
+    50% { opacity: 0.25; }
+  }
+
+  .top-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .btn-chip {
+    background: var(--surface-2);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    padding: 5px 9px;
+    cursor: pointer;
+    transition: transform 160ms var(--ease-snap), border-color 160ms var(--ease-snap), background 160ms var(--ease-snap);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .btn-chip:active {
+    transform: scale(0.96);
+  }
+
+  .btn-chip.active {
+    border-color: var(--yellow);
+    color: var(--yellow);
+    background: var(--yellow-dim);
+  }
+
+  /* Hero Headline Card */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 13px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 220ms var(--ease-snap);
+  }
+
+  .hero-kicker {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--yellow);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .hero-title {
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.18;
+    color: #fff;
+  }
+
+  .hero-title span.hl-yellow {
+    color: var(--yellow);
+  }
+
+  .hero-title span.hl-blue {
+    background: var(--blue);
+    padding: 0 6px;
+    border-radius: 6px;
+    display: inline-block;
+  }
+
+  .hero-sub {
+    margin-top: 6px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* Rank Strip */
+  .rank-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    margin-top: 11px;
+  }
+
+  .rank-btn {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 8px 7px;
+    text-align: left;
+    color: var(--text);
+    cursor: pointer;
+    position: relative;
+    transition: transform 180ms var(--ease-snap), border-color 180ms var(--ease-snap), background 180ms var(--ease-snap);
+  }
+
+  .rank-btn:active {
+    transform: scale(0.97);
+  }
+
+  .rank-btn.selected {
+    background: linear-gradient(160deg, rgba(0, 66, 166, 0.52), rgba(14, 19, 29, 0.95));
+    border-color: var(--yellow);
+    box-shadow: inset 0 0 0 1px rgba(234, 254, 7, 0.25);
+  }
+
+  .rank-tag {
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--yellow);
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .rank-name {
+    font-size: 12px;
+    font-weight: 700;
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .rank-score {
+    font-family: var(--mono);
+    font-size: 15px;
+    font-weight: 800;
+    margin-top: 2px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .rank-bar-bg {
+    height: 3px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 2px;
+    margin-top: 5px;
+    overflow: hidden;
+  }
+
+  .rank-bar-fill {
+    height: 100%;
+    background: var(--yellow);
+    width: 0%;
+    transition: width 550ms var(--ease-snap);
+  }
+
+  /* Survival Game Module: CAN YOU OUTRUN IT? */
+  .game-card {
+    border-color: rgba(234, 254, 7, 0.35);
+    background: linear-gradient(180deg, #0f1624 0%, #0b0f17 100%);
+  }
+
+  .game-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .game-badge {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 700;
+    color: #07090e;
+    background: var(--yellow);
+    padding: 2px 7px;
+    border-radius: 5px;
+    letter-spacing: 0.05em;
+  }
+
+  .game-title {
+    font-size: 16px;
+    font-weight: 800;
+    margin-top: 4px;
+    letter-spacing: -0.01em;
+  }
+
+  .suit-toggle {
+    display: flex;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 2px;
+    flex-shrink: 0;
+  }
+
+  .suit-opt {
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 700;
+    padding: 5px 7px;
+    border-radius: 7px;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 160ms var(--ease-snap);
+  }
+
+  .suit-opt.active {
+    background: var(--blue);
+    color: #fff;
+  }
+
+  /* Radar / Trajectory Distance Visualizer */
+  .radar-stage {
+    margin-top: 10px;
+    background: #06080c;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 10px;
+    position: relative;
+  }
+
+  .radar-top {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  .radar-track {
+    position: relative;
+    height: 46px;
+    border-radius: 8px;
+    background:
+      repeating-linear-gradient(90deg, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 20px),
+      linear-gradient(90deg, rgba(255, 59, 78, 0.35) 0%, rgba(255, 176, 32, 0.16) 42%, rgba(0, 66, 166, 0.22) 100%);
+    border: 1px solid #1b2434;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+  }
+
+  .epicenter-node {
+    position: absolute;
+    left: 10px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--danger);
+    box-shadow: 0 0 12px var(--danger);
+    z-index: 2;
+  }
+
+  .shockwave-ring {
+    position: absolute;
+    left: 17px;
+    height: 100%;
+    width: 0%;
+    border-right: 2px solid var(--danger);
+    background: linear-gradient(90deg, transparent, rgba(255, 59, 78, 0.24));
+    transition: width 90ms linear;
+    pointer-events: none;
+  }
+
+  .human-pin {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: left 140ms var(--ease-snap);
+    pointer-events: none;
+  }
+
+  .pin-crosshair {
+    width: 22px;
+    height: 22px;
+    border: 1.5px solid var(--yellow);
+    border-radius: 50%;
+    background: rgba(7, 9, 14, 0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--yellow);
+    box-shadow: 0 0 10px rgba(234, 254, 7, 0.35);
+  }
+
+  .pin-label {
+    font-family: var(--mono);
+    font-size: 8px;
+    font-weight: 700;
+    color: var(--yellow);
+    margin-top: 2px;
+    background: rgba(7,9,14,0.9);
+    padding: 0 3px;
+    border-radius: 3px;
+  }
+
+  /* Slider Control */
+  .slider-wrap {
+    margin-top: 10px;
+  }
+
+  .slider-labels {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-family: var(--mono);
+    font-size: 11px;
+    margin-bottom: 5px;
+  }
+
+  .dist-readout {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--yellow);
+    font-variant-numeric: tabular-nums;
+  }
+
+  input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 28px;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  input[type="range"]::-webkit-slider-runnable-track {
+    height: 8px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--danger) 0%, var(--warn) 38%, var(--blue-bright) 100%);
+    border: 1px solid rgba(255,255,255,0.14);
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--yellow);
+    border: 3px solid #07090e;
+    margin-top: -8px;
+    box-shadow: 0 0 0 2px var(--yellow), 0 4px 10px rgba(0,0,0,0.6);
+    transition: transform 140ms var(--ease-snap);
+  }
+
+  input[type="range"]:active::-webkit-slider-thumb {
+    transform: scale(1.14);
+  }
+
+  /* Death Clock & Outcome Readout */
+  .telemetry-box {
+    margin-top: 10px;
+    background: #06080d;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 10px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .telemetry-box.fatal {
+    border-color: var(--danger);
+    background: linear-gradient(135deg, rgba(255, 59, 78, 0.14), #06080d 65%);
+  }
+
+  .telemetry-box.survived {
+    border-color: var(--ok);
+    background: linear-gradient(135deg, rgba(41, 214, 124, 0.12), #06080d 65%);
+  }
+
+  .clock-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .death-clock {
+    font-family: var(--mono);
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+    color: var(--yellow);
+    margin: 2px 0;
+  }
+
+  .telemetry-box.fatal .death-clock {
+    color: var(--danger);
+  }
+
+  .telemetry-box.survived .death-clock {
+    color: var(--ok);
+  }
+
+  .outcome-text {
+    font-size: 11.5px;
+    color: var(--text);
+    line-height: 1.35;
+  }
+
+  .sim-btn {
+    background: var(--yellow);
+    color: #07090e;
+    border: none;
+    border-radius: 10px;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 800;
+    padding: 10px 11px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    transition: transform 150ms var(--ease-snap), background 150ms var(--ease-snap);
+    white-space: nowrap;
+  }
+
+  .sim-btn:active {
+    transform: scale(0.95);
+  }
+
+  .sim-btn.running {
+    background: var(--danger);
+    color: #fff;
+  }
+
+  .micro-metrics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    margin-top: 8px;
+  }
+
+  .m-tile {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 6px 7px;
+  }
+
+  .m-k {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .m-v {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 700;
+    margin-top: 2px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Month Selector & NASA POWER Telemetry */
+  .section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  .section-title {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--yellow);
+  }
+
+  .month-pills {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 4px;
+    margin-bottom: 10px;
+  }
+
+  .m-pill {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 700;
+    padding: 6px 0;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 150ms var(--ease-snap);
+  }
+
+  .m-pill.active {
+    background: var(--yellow);
+    color: #07090e;
+    border-color: var(--yellow);
+  }
+
+  .m-pill.annual-pill {
+    grid-column: span 6;
+    background: rgba(0, 66, 166, 0.35);
+    color: #fff;
+    border-color: rgba(44, 123, 229, 0.5);
+    margin-bottom: 2px;
+  }
+
+  .m-pill.annual-pill.active {
+    background: var(--blue-bright);
+    border-color: var(--yellow);
+    color: #fff;
+  }
+
+  /* Gauges */
+  .gauge-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .gauge-box {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 11px;
+    padding: 9px;
+  }
+
+  .gauge-top {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+  }
+
+  .gauge-num {
+    font-family: var(--mono);
+    font-size: 18px;
+    font-weight: 800;
+    margin: 3px 0 6px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .bar-track {
+    height: 6px;
+    background: #080b11;
+    border-radius: 999px;
+    overflow: hidden;
+  }
+
+  .bar-fill {
+    height: 100%;
+    border-radius: 999px;
+    transition: width 480ms var(--ease-snap);
+  }
+
+  /* Extremes Summary Grid */
+  .extremes-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+    margin-top: 9px;
+  }
+
+  .ex-item {
+    background: #0a0e16;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 7px 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .ex-k {
+    font-size: 10px;
+    color: var(--muted);
+  }
+
+  .ex-v {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    color: #fff;
+    text-align: right;
+  }
+
+  /* Canvas Chart */
+  .chart-wrap {
+    background: #070a10;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 8px;
+  }
+
+  canvas {
+    width: 100%;
+    height: 165px;
+    display: block;
+  }
+
+  .legend {
+    display: flex;
+    justify-content: space-between;
+    gap: 6px;
+    margin-top: 6px;
+    font-family: var(--mono);
+    font-size: 10px;
+  }
+
+  .leg-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--muted);
+  }
+
+  .leg-swatch {
+    width: 10px;
+    height: 3px;
+    border-radius: 2px;
+  }
+
+  /* Formula & Status Footer */
+  .formula-box {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    background: rgba(14, 19, 29, 0.7);
+    border: 1px dashed var(--border);
+    border-radius: 11px;
+    padding: 9px 10px;
+    line-height: 1.45;
+  }
+
+  .formula-box code {
+    color: var(--yellow);
+  }
+
+  .status-line {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--yellow);
+    margin-top: 4px;
+    min-height: 14px;
+  }
+
+  @keyframes jitter {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-1.5px); }
+    75% { transform: translateX(1.5px); }
+  }
+
+  .jitter {
+    animation: jitter 120ms infinite linear;
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- TOP TELEMETRY BAR -->
+  <div class="topbar">
+    <div class="team-pill">
+      <span class="pulse-dot"></span>
+      <span>FANTASTIC FOUR</span>
+    </div>
+    <div class="top-actions">
+      <button class="btn-chip active" id="soundBtn" type="button" aria-label="Toggle telemetry audio">SFX: ON</button>
+      <button class="btn-chip" id="nasaRefreshBtn" type="button">↻ Refresh from NASA</button>
+    </div>
+  </div>
+
+  <!-- BIG HEADLINE + MARS-LIKENESS LEADERBOARD -->
+  <section class="card">
+    <div class="hero-kicker">
+      <span>NASA SPACE APPS // MARS LAB</span>
+      <span id="dataSourceTag">NASA POWER 2025</span>
+    </div>
+    <h1 class="hero-title" id="heroHeadline">
+      Fantastic Four: <span class="hl-yellow" id="winnerName">Atacama Desert</span> is Most Mars-Like (<span class="hl-blue" id="winnerScore">61.0</span>)
+    </h1>
+    <p class="hero-sub">Tap any analog site to inspect 2025 NASA climate telemetry and test human survival against a Mars dust-storm shockwave.</p>
+
+    <div class="rank-strip" id="rankStrip"></div>
+  </section>
+
+  <!-- SURVIVAL-METER GAME: CAN YOU OUTRUN IT? -->
+  <section class="card game-card" id="gameCard">
+    <div class="game-header">
+      <div>
+        <span class="game-badge">SURVIVAL-METER // CAN YOU OUTRUN IT?</span>
+        <h2 class="game-title" id="gameScenarioTitle">Mars Storm Front @ Atacama Desert</h2>
+      </div>
+      <div class="suit-toggle" role="group" aria-label="Suit selection">
+        <button class="suit-opt active" data-suit="unsuited" type="button">NO SUIT</button>
+        <button class="suit-opt" data-suit="eva" type="button">EVA SUIT</button>
+      </div>
+    </div>
+
+    <!-- Radar Pin Drop Stage -->
+    <div class="radar-stage">
+      <div class="radar-top">
+        <span>EPICENTER (0 km)</span>
+        <span id="windSpeedTag">GUST: 142 km/h</span>
+        <span>SAFE ZONE (120 km)</span>
+      </div>
+      <div class="radar-track" id="radarTrack">
+        <div class="epicenter-node" title="Catastrophe Epicenter"></div>
+        <div class="shockwave-ring" id="shockwaveRing"></div>
+        <div class="human-pin" id="humanPin" style="left: 38%;">
+          <div class="pin-crosshair">+</div>
+          <div class="pin-label" id="pinDistLabel">45 km</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Distance Slider -->
+    <div class="slider-wrap">
+      <div class="slider-labels">
+        <span>DROP DISTANCE FROM EVENT</span>
+        <span class="dist-readout" id="distReadout">45 km</span>
+      </div>
+      <input type="range" id="distSlider" min="2" max="120" value="45" step="1" aria-label="Distance from catastrophic event in kilometers" />
+    </div>
+
+    <!-- Real-Time Survival Clock & Outcome -->
+    <div class="telemetry-box fatal" id="telemetryBox">
+      <div>
+        <div class="clock-label" id="clockLabel">ESTIMATED SURVIVAL WINDOW</div>
+        <div class="death-clock" id="deathClock">00m : 19.0s</div>
+        <div class="outcome-text" id="outcomeText">Hypoxic dust-wall &amp; thermal drop hits in 19.0s.</div>
+      </div>
+      <button class="sim-btn" id="simBtn" type="button">DROP PIN</button>
+    </div>
+
+    <div class="micro-metrics">
+      <div class="m-tile" id="tileImpact">
+        <div class="m-k">WAVE ETA</div>
+        <div class="m-v" id="etaVal">19.0 s</div>
+      </div>
+      <div class="m-tile" id="tileStress">
+        <div class="m-k">THERMAL DROP</div>
+        <div class="m-v" id="thermalVal">-14.2°C</div>
+      </div>
+      <div class="m-tile">
+        <div class="m-k">MARS INDEX</div>
+        <div class="m-v" id="siteMarsVal">61.0 / 100</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MONTHLY / ANNUAL TELEMETRY & EXTREMES -->
+  <section class="card">
+    <div class="section-head">
+      <span class="section-title" id="detailHeader">ATACAMA DESERT // 2025 TELEMETRY</span>
+      <span style="font-family:var(--mono);font-size:10px;color:var(--muted);" id="coordTag">-22.9°, -68.2°</span>
+    </div>
+
+    <div class="month-pills" id="monthPills"></div>
+
+    <div class="gauge-grid">
+      <div class="gauge-box">
+        <div class="gauge-top"><span>MARS-LIKENESS</span><span id="periodLabel">ANNUAL</span></div>
+        <div class="gauge-num" style="color:var(--yellow);" id="marsScoreVal">61.0</div>
+        <div class="bar-track"><div class="bar-fill" id="marsScoreBar" style="background:var(--yellow);width:0%;"></div></div>
+      </div>
+      <div class="gauge-box">
+        <div class="gauge-top"><span>COLDNESS (50%)</span><span id="tempVal">14.22°C</span></div>
+        <div class="gauge-num" style="color:#58a6ff;" id="coldVal">24.0%</div>
+        <div class="bar-track"><div class="bar-fill" id="coldBar" style="background:#2c7be5;width:0%;"></div></div>
+      </div>
+      <div class="gauge-box">
+        <div class="gauge-top"><span>DRYNESS (50%)</span><span id="rainVal">0.10 mm/d</span></div>
+        <div class="gauge-num" style="color:#29d67c;" id="dryVal">98.0%</div>
+        <div class="bar-track"><div class="bar-fill" id="dryBar" style="background:#29d67c;width:0%;"></div></div>
+      </div>
+      <div class="gauge-box">
+        <div class="gauge-top"><span>SOLAR FLUX</span><span>2025 AVG</span></div>
+        <div class="gauge-num" style="color:#ffb020;" id="sunVal">7.11 kWh</div>
+        <div class="bar-track"><div class="bar-fill" id="sunBar" style="background:#ffb020;width:0%;"></div></div>
+      </div>
+    </div>
+
+    <!-- Annual Extremes Calculated from DATA -->
+    <div class="extremes-grid" id="extremesGrid"></div>
+  </section>
+
+  <!-- 12-MONTH TEMPERATURE CHART (SVG) -->
+  <section class="card">
+    <div class="section-head">
+      <span class="section-title">2025 MONTHLY TEMPERATURE (°C)</span>
+      <span style="font-family:var(--mono);font-size:10px;color:var(--muted);">JAN–DEC</span>
+    </div>
+    <div class="chart-wrap">
+      <svg id="tempChart" viewBox="0 0 340 165" role="img" aria-label="12-month temperature line chart for Kumasi, Sahara, and Atacama Desert"></svg>
+      <div class="legend">
+        <span class="leg-item"><span class="leg-swatch" style="background:#eafe07;"></span>Atacama</span>
+        <span class="leg-item"><span class="leg-swatch" style="background:#2c7be5;"></span>Sahara</span>
+        <span class="leg-item"><span class="leg-swatch" style="background:#ff5c7c;"></span>Kumasi</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- FORMULA & NASA API STATUS -->
+  <div class="formula-box">
+    <div><strong>MARS-LIKENESS FORMULA:</strong> <code>Score = 100 × (0.5 × coldness + 0.5 × dryness)</code> where <code>coldness = clamp((25 - t) / 45, 0, 1)</code> and <code>dryness = clamp(1 - r / 5, 0, 1)</code>.</div>
+    <div class="status-line" id="statusLine"></div>
+  </div>
+
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  // EXACT NASA POWER DATA (2025)
+  const INITIAL_DATA = [
+    {
+      "name": "Kumasi",
+      "lat": 6.67,
+      "lon": -1.57,
+      "annual": { "t": 25.84, "r": 4.93, "s": 4.58 },
+      "monthly": {
+        "t": [26.25, 27.32, 27.26, 27.29, 26.28, 25.37, 24.29, 24.38, 25.14, 25.42, 25.79, 25.45],
+        "r": [1.08, 2.25, 2.94, 3.67, 8.23, 9.73, 1.91, 2.13, 9.3, 10.35, 5.19, 2.41],
+        "s": [5.19, 5.02, 5.04, 5.01, 5.03, 4.61, 3.82, 3.48, 3.92, 4.62, 4.84, 4.44]
+      }
+    },
+    {
+      "name": "Sahara",
+      "lat": 22.8,
+      "lon": 5.5,
+      "annual": { "t": 20.72, "r": 0.39, "s": 6.15 },
+      "monthly": {
+        "t": [10.98, 12.59, 19.76, 22.06, 26.27, 26.6, 28.15, 26.54, 24.66, 22.67, 16.63, 11.12],
+        "r": [0, 0, 0.09, 0, 0.02, 0.74, 0.1, 2.78, 0.67, 0.09, 0.03, 0.08],
+        "s": [4.99, 5.48, 6.09, 7.5, 7.04, 6.86, 7.22, 6.72, 6.7, 5.84, 5.09, 4.28]
+      }
+    },
+    {
+      "name": "Atacama Desert",
+      "lat": -22.9,
+      "lon": -68.2,
+      "annual": { "t": 14.22, "r": 0.1, "s": 7.11 },
+      "monthly": {
+        "t": [18.06, 19, 16.64, 13.9, 13.22, 8.42, 10.99, 9.92, 13.51, 14.58, 16.24, 16.47],
+        "r": [0.03, 0.86, 0.04, 0.01, 0, 0.13, 0.02, 0, 0.01, 0.01, 0.07, 0.07],
+        "s": [8.82, 7.17, 7.54, 6.43, 5.4, 4.78, 5.14, 6.25, 7.18, 8.63, 9, 8.97]
+      }
+    }
+  ];
+
+  const MONTHS = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+
+  let dataset = JSON.parse(JSON.stringify(INITIAL_DATA));
+  let selectedPlaceName = "";
+  let selectedMonthIdx = -1; // -1 = annual
+  let distanceKm = 45;
+  let suitMode = "unsuited";
+  let soundEnabled = true;
+  let simTimer = null;
+  let simStartTime = 0;
+
+  // Minimalist Web Audio Synthesizer (Precision Mechanical Clicks, Sonar Ping, Low Thud)
+  let audioCtx = null;
+  function ensureAudio() {
+    if (!soundEnabled) return null;
+    if (!audioCtx) {
+      const Ctx = window.AudioContext || window.webkitAudioContext;
+      if (Ctx) audioCtx = new Ctx();
+    }
+    if (audioCtx && audioCtx.state === "suspended") {
+      audioCtx.resume().catch(() => {});
+    }
+    return audioCtx;
+  }
+
+  function playClick() {
+    const ctx = ensureAudio();
+    if (!ctx) return;
+    const now = ctx.currentTime;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = "triangle";
+    osc.frequency.setValueAtTime(1150, now);
+    osc.frequency.exponentialRampToValueAtTime(320, now + 0.022);
+    gain.gain.setValueAtTime(0.08, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.024);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.025);
+  }
+
+  function playSonarPing() {
+    const ctx = ensureAudio();
+    if (!ctx) return;
+    const now = ctx.currentTime;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = "sine";
+    osc.frequency.setValueAtTime(980, now);
+    osc.frequency.exponentialRampToValueAtTime(660, now + 0.18);
+    gain.gain.setValueAtTime(0.09, now);
+    gain.gain.exponentialRampToValueAtTime(0.0008, now + 0.22);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.23);
+  }
+
+  function playOutcomeTone(survived) {
+    const ctx = ensureAudio();
+    if (!ctx) return;
+    const now = ctx.currentTime;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    if (survived) {
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(523.25, now);
+      osc.frequency.setValueAtTime(783.99, now + 0.09);
+      gain.gain.setValueAtTime(0.08, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(now);
+      osc.stop(now + 0.29);
+    } else {
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(115, now);
+      osc.frequency.exponentialRampToValueAtTime(38, now + 0.26);
+      gain.gain.setValueAtTime(0.16, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(now);
+      osc.stop(now + 0.29);
+    }
+  }
+
+  // Math Helpers
+  function clamp(val, min, max) {
+    return Math.min(max, Math.max(min, val));
+  }
+
+  function calcMarsMetrics(t, r) {
+    const coldness = clamp((25 - t) / 45, 0, 1);
+    const dryness = clamp(1 - r / 5, 0, 1);
+    const score = (0.5 * coldness + 0.5 * dryness) * 100;
+    return {
+      coldness,
+      dryness,
+      score
+    };
+  }
+
+  function analyzePlace(place) {
+    const annualCalc = calcMarsMetrics(place.annual.t, place.annual.r);
+    const monthlyCalc = place.monthly.t.map((t, i) => {
+      const r = place.monthly.r[i];
+      const s = place.monthly.s[i];
+      return {
+        month: MONTHS[i],
+        t,
+        r,
+        s,
+        ...calcMarsMetrics(t, r)
+      };
+    });
+
+    let coldestIdx = 0;
+    let hottestIdx = 0;
+    let wettestIdx = 0;
+    let sunniestIdx = 0;
+
+    for (let i = 1; i < 12; i++) {
+      if (place.monthly.t[i] < place.monthly.t[coldestIdx]) coldestIdx = i;
+      if (place.monthly.t[i] > place.monthly.t[hottestIdx]) hottestIdx = i;
+      if (place.monthly.r[i] > place.monthly.r[wettestIdx]) wettestIdx = i;
+      if (place.monthly.s[i] > place.monthly.s[sunniestIdx]) sunniestIdx = i;
+    }
+
+    const tempRange = place.monthly.t[hottestIdx] - place.monthly.t[coldestIdx];
+
+    return {
+      ...place,
+      annualCalc,
+      monthlyCalc,
+      extremes: {
+        coldest: { month: MONTHS[coldestIdx], val: place.monthly.t[coldestIdx] },
+        hottest: { month: MONTHS[hottestIdx], val: place.monthly.t[hottestIdx] },
+        wettest: { month: MONTHS[wettestIdx], val: place.monthly.r[wettestIdx] },
+        sunniest: { month: MONTHS[sunniestIdx], val: place.monthly.s[sunniestIdx] },
+        tempRange
+      }
+    };
+  }
+
+  function getRankedPlaces() {
+    return dataset
+      .map(analyzePlace)
+      .sort((a, b) => b.annualCalc.score - a.annualCalc.score);
+  }
+
+  // Smooth Number Count-Up
+  const activeTweens = new WeakMap();
+  function animateNumber(el, target, decimals = 1, suffix = "") {
+    if (!el) return;
+    const prev = activeTweens.get(el);
+    if (prev) cancelAnimationFrame(prev);
+    const startVal = parseFloat(el.dataset.val || "0") || 0;
+    el.dataset.val = String(target);
+    const duration = 360;
+    const t0 = performance.now();
+
+    function step(now) {
+      const p = clamp((now - t0) / duration, 0, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      const cur = startVal + (target - startVal) * eased;
+      el.textContent = cur.toFixed(decimals) + suffix;
+      if (p < 1) {
+        activeTweens.set(el, requestAnimationFrame(step));
+      } else {
+        el.textContent = target.toFixed(decimals) + suffix;
+      }
+    }
+    activeTweens.set(el, requestAnimationFrame(step));
+  }
+
+  // Survival-Meter Physics Engine (Anchored in the active site's real NASA numbers)
+  function computeSurvivalState(placeObj, monthIdx, dist, suit) {
+    const metrics = monthIdx === -1
+      ? { t: placeObj.annual.t, r: placeObj.annual.r, s: placeObj.annual.s, score: placeObj.annualCalc.score }
+      : {
+          t: placeObj.monthly.t[monthIdx],
+          r: placeObj.monthly.r[monthIdx],
+          s: placeObj.monthly.s[monthIdx],
+          score: placeObj.monthlyCalc[monthIdx].score
+        };
+
+    // Catastrophic event: Hyper-arid Mars-analog hab-breach / dust-wall shockwave
+    // Shockwave speed scales with solar flux & aridity (km/h -> km/s)
+    const gustKmh = Math.round(95 + metrics.s * 9.5 + (metrics.score * 0.45));
+    const waveSpeedKms = gustKmh / 3600;
+    const etaSeconds = dist / waveSpeedKms;
+
+    // Safe threshold distance depends on suit & local Mars hostility
+    const safeDistKm = suit === "eva"
+      ? Math.round(28 + metrics.score * 0.35)
+      : Math.round(68 + metrics.score * 0.42);
+
+    const survived = dist >= safeDistKm;
+    const thermalDrop = -(8 + (metrics.score / 100) * 24).toFixed(1);
+
+    let survivalSeconds = etaSeconds;
+    let cause = "";
+
+    if (survived) {
+      survivalSeconds = etaSeconds;
+      cause = suit === "eva"
+        ? `EVA seals hold at ${dist} km. Shockwave dissipates before critical thermal loss.`
+        : `Outran front at ${dist} km. Ambient ${metrics.t.toFixed(1)}°C remains survivable.`;
+    } else if (suit === "unsuited") {
+      if (dist < 18) {
+        survivalSeconds = Math.max(2.4, etaSeconds * 0.35);
+        cause = `Direct barotrauma & asphyxiation at ${dist} km (${metrics.r.toFixed(2)} mm/d dry air).`;
+      } else {
+        survivalSeconds = etaSeconds;
+        cause = `Overtaken in ${formatClock(etaSeconds)} — acute hypoxia & ${thermalDrop}°C shock.`;
+      }
+    } else {
+      // EVA suit buys extra buffer before radiator/seal overload
+      survivalSeconds = etaSeconds * 1.45;
+      cause = `EVA visor sand-ablation & cooling failure at ${dist} km (${gustKmh} km/h).`;
+    }
+
+    return {
+      gustKmh,
+      etaSeconds,
+      safeDistKm,
+      survived,
+      thermalDrop,
+      survivalSeconds,
+      cause,
+      marsScore: metrics.score
+    };
+  }
+
+  function formatClock(sec) {
+    if (sec >= 3600) {
+      const h = Math.floor(sec / 3600);
+      const m = Math.floor((sec % 3600) / 60);
+      return `${String(h).padStart(2, "0")}h : ${String(m).padStart(2, "0")}m`;
+    }
+    const m = Math.floor(sec / 60);
+    const s = sec % 60;
+    return `${String(m).padStart(2, "0")}m : ${s.toFixed(1).padStart(4, "0")}s`;
+  }
+
+  function stopSimulation() {
+    if (simTimer) {
+      cancelAnimationFrame(simTimer);
+      simTimer = null;
+    }
+    const ring = document.getElementById("shockwaveRing");
+    if (ring) ring.style.width = "0%";
+    const btn = document.getElementById("simBtn");
+    if (btn) {
+      btn.textContent = "DROP PIN";
+      btn.classList.remove("running");
+    }
+  }
+
+  function runSimulation() {
+    stopSimulation();
+    playSonarPing();
+
+    const ranked = getRankedPlaces();
+    const activePlace = ranked.find(p => p.name === selectedPlaceName) || ranked[0];
+    const state = computeSurvivalState(activePlace, selectedMonthIdx, distanceKm, suitMode);
+
+    const btn = document.getElementById("simBtn");
+    const clockEl = document.getElementById("deathClock");
+    const ring = document.getElementById("shockwaveRing");
+    const box = document.getElementById("telemetryBox");
+
+    btn.textContent = "TRACKING";
+    btn.classList.add("running");
+
+    // Compress real ETA into a punchy 2.4s telemetry sweep for immediate feedback
+    const visualDuration = 2200;
+    const targetPct = clamp(((distanceKm - 2) / 118) * 90 + 6, 6, 96);
+    simStartTime = performance.now();
+
+    function frame(now) {
+      const elapsed = now - simStartTime;
+      const t = clamp(elapsed / visualDuration, 0, 1);
+      const wavePct = state.survived ? Math.min(targetPct - 4, t * 72) : t * targetPct;
+      ring.style.width = wavePct + "%";
+
+      const rem = Math.max(0, state.survivalSeconds * (1 - t));
+      clockEl.textContent = state.survived
+        ? `SAFE // +${formatClock(state.etaSeconds)}`
+        : formatClock(rem);
+
+      if (t < 1) {
+        simTimer = requestAnimationFrame(frame);
+      } else {
+        simTimer = null;
+        btn.textContent = "DROP PIN";
+        btn.classList.remove("running");
+        playOutcomeTone(state.survived);
+        if (state.survived) {
+          clockEl.textContent = "SURVIVED";
+          box.classList.remove("fatal");
+          box.classList.add("survived");
+        } else {
+          clockEl.textContent = "00m : 00.0s";
+          box.classList.remove("survived");
+          box.classList.add("fatal");
+          box.classList.add("jitter");
+          setTimeout(() => box.classList.remove("jitter"), 360);
+        }
+      }
+    }
+
+    simTimer = requestAnimationFrame(frame);
+  }
+
+  // Render Functions
+  function renderChart(rankedPlaces) {
+    const svg = document.getElementById("tempChart");
+    const w = 340;
+    const h = 165;
+    const padL = 28;
+    const padR = 10;
+    const padT = 14;
+    const padB = 22;
+    const plotW = w - padL - padR;
+    const plotH = h - padT - padB;
+
+    const minT = 5;
+    const maxT = 32;
+
+    const colorMap = {
+      "Atacama Desert": "#eafe07",
+      "Sahara": "#2c7be5",
+      "Kumasi": "#ff5c7c"
+    };
+
+    let markup = "";
+
+    // Grid lines
+    [10, 15, 20, 25, 30].forEach(temp => {
+      const y = padT + plotH - ((temp - minT) / (maxT - minT)) * plotH;
+      markup += `<line x1="${padL}" y1="${y.toFixed(1)}" x2="${w - padR}" y2="${y.toFixed(1)}" stroke="#1b2434" stroke-width="1" />`;
+      markup += `<text x="${padL - 5}" y="${(y + 3).toFixed(1)}" fill="#6f809c" font-family="monospace" font-size="8.5" text-anchor="end">${temp}°</text>`;
+    });
+
+    // Month labels
+    MONTHS.forEach((m, idx) => {
+      const x = padL + (idx / 11) * plotW;
+      if (idx % 2 === 0 || idx === 11) {
+        markup += `<text x="${x.toFixed(1)}" y="${h - 6}" fill="#6f809c" font-family="monospace" font-size="8.5" text-anchor="middle">${m[0]}</text>`;
+      }
+      if (idx === selectedMonthIdx) {
+        markup += `<line x1="${x.toFixed(1)}" y1="${padT}" x2="${x.toFixed(1)}" y2="${h - padB}" stroke="#eafe07" stroke-width="1" stroke-dasharray="2,2" />`;
+      }
+    });
+
+    // Lines
+    rankedPlaces.forEach(place => {
+      const stroke = colorMap[place.name] || "#ffffff";
+      const isSelected = place.name === selectedPlaceName;
+      const pts = place.monthly.t.map((val, i) => {
+        const x = padL + (i / 11) * plotW;
+        const y = padT + plotH - ((val - minT) / (maxT - minT)) * plotH;
+        return `${x.toFixed(1)},${y.toFixed(1)}`;
+      });
+
+      markup += `<polyline fill="none" stroke="${stroke}" stroke-width="${isSelected ? 2.6 : 1.5}" stroke-opacity="${isSelected ? 1 : 0.65}" stroke-linecap="round" stroke-linejoin="round" points="${pts.join(" ")}" />`;
+
+      if (isSelected) {
+        place.monthly.t.forEach((val, i) => {
+          const x = padL + (i / 11) * plotW;
+          const y = padT + plotH - ((val - minT) / (maxT - minT)) * plotH;
+          const r = i === selectedMonthIdx ? 4 : 2.3;
+          markup += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}" fill="${stroke}" />`;
+        });
+      }
+    });
+
+    svg.innerHTML = markup;
+  }
+
+  function renderAll() {
+    const ranked = getRankedPlaces();
+    if (!selectedPlaceName || !ranked.some(p => p.name === selectedPlaceName)) {
+      selectedPlaceName = ranked[0].name;
+    }
+
+    const winner = ranked[0];
+    document.getElementById("winnerName").textContent = winner.name;
+    document.getElementById("winnerScore").textContent = winner.annualCalc.score.toFixed(1);
+
+    // Leaderboard cards
+    const rankStrip = document.getElementById("rankStrip");
+    rankStrip.innerHTML = ranked.map((p, idx) => {
+      const sel = p.name === selectedPlaceName ? "selected" : "";
+      return `
+        <button type="button" class="rank-btn ${sel}" data-place="${p.name}">
+          <div class="rank-tag"><span>#${idx + 1}</span><span>${idx === 0 ? "WIN" : "SITE"}</span></div>
+          <div class="rank-name">${p.name}</div>
+          <div class="rank-score">${p.annualCalc.score.toFixed(1)}</div>
+          <div class="rank-bar-bg"><div class="rank-bar-fill" style="width:${p.annualCalc.score.toFixed(1)}%"></div></div>
+        </button>
+      `;
+    }).join("");
+
+    rankStrip.querySelectorAll(".rank-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        playClick();
+        stopSimulation();
+        selectedPlaceName = btn.dataset.place;
+        renderAll();
+      });
+    });
+
+    const active = ranked.find(p => p.name === selectedPlaceName) || winner;
+
+    // Month pills
+    const monthPills = document.getElementById("monthPills");
+    let pillsHtml = `<button type="button" class="m-pill annual-pill ${selectedMonthIdx === -1 ? "active" : ""}" data-m="-1">2025 ANNUAL AVERAGE</button>`;
+    MONTHS.forEach((m, idx) => {
+      pillsHtml += `<button type="button" class="m-pill ${selectedMonthIdx === idx ? "active" : ""}" data-m="${idx}">${m}</button>`;
+    });
+    monthPills.innerHTML = pillsHtml;
+
+    monthPills.querySelectorAll(".m-pill").forEach(btn => {
+      btn.addEventListener("click", () => {
+        playClick();
+        stopSimulation();
+        selectedMonthIdx = parseInt(btn.dataset.m, 10);
+        renderAll();
+      });
+    });
+
+    // Active period metrics
+    const cur = selectedMonthIdx === -1
+      ? {
+          label: "ANNUAL",
+          t: active.annual.t,
+          r: active.annual.r,
+          s: active.annual.s,
+          calc: active.annualCalc
+        }
+      : {
+          label: MONTHS[selectedMonthIdx],
+          t: active.monthly.t[selectedMonthIdx],
+          r: active.monthly.r[selectedMonthIdx],
+          s: active.monthly.s[selectedMonthIdx],
+          calc: active.monthlyCalc[selectedMonthIdx]
+        };
+
+    document.getElementById("detailHeader").textContent = `${active.name.toUpperCase()} // ${cur.label}`;
+    document.getElementById("coordTag").textContent = `${active.lat}°, ${active.lon}°`;
+    document.getElementById("periodLabel").textContent = cur.label;
+
+    animateNumber(document.getElementById("marsScoreVal"), cur.calc.score, 1, "");
+    document.getElementById("marsScoreBar").style.width = `${cur.calc.score.toFixed(1)}%`;
+
+    document.getElementById("tempVal").textContent = `${cur.t.toFixed(2)}°C`;
+    animateNumber(document.getElementById("coldVal"), cur.calc.coldness * 100, 1, "%");
+    document.getElementById("coldBar").style.width = `${(cur.calc.coldness * 100).toFixed(1)}%`;
+
+    document.getElementById("rainVal").textContent = `${cur.r.toFixed(2)} mm/d`;
+    animateNumber(document.getElementById("dryVal"), cur.calc.dryness * 100, 1, "%");
+    document.getElementById("dryBar").style.width = `${(cur.calc.dryness * 100).toFixed(1)}%`;
+
+    animateNumber(document.getElementById("sunVal"), cur.s, 2, " kWh");
+    document.getElementById("sunBar").style.width = `${clamp((cur.s / 10) * 100, 0, 100).toFixed(1)}%`;
+
+    // Annual extremes grid
+    const ex = active.extremes;
+    document.getElementById("extremesGrid").innerHTML = `
+      <div class="ex-item"><span class="ex-k">Coldest Month</span><span class="ex-v">${ex.coldest.month} (${ex.coldest.val.toFixed(2)}°C)</span></div>
+      <div class="ex-item"><span class="ex-k">Hottest Month</span><span class="ex-v">${ex.hottest.month} (${ex.hottest.val.toFixed(2)}°C)</span></div>
+      <div class="ex-item"><span class="ex-k">Wettest Month</span><span class="ex-v">${ex.wettest.month} (${ex.wettest.val.toFixed(2)} mm)</span></div>
+      <div class="ex-item"><span class="ex-k">Sunniest Month</span><span class="ex-v">${ex.sunniest.month} (${ex.sunniest.val.toFixed(2)} kWh)</span></div>
+      <div class="ex-item" style="grid-column: span 2;"><span class="ex-k">Annual Temp Range (Hottest − Coldest)</span><span class="ex-v" style="color:var(--yellow);">${ex.tempRange.toFixed(2)}°C</span></div>
+    `;
+
+    // Survival game telemetry update
+    const surv = computeSurvivalState(active, selectedMonthIdx, distanceKm, suitMode);
+    document.getElementById("gameScenarioTitle").textContent = `Mars Storm Front @ ${active.name}`;
+    document.getElementById("windSpeedTag").textContent = `GUST: ${surv.gustKmh} km/h`;
+    document.getElementById("distReadout").textContent = `${distanceKm} km`;
+    document.getElementById("pinDistLabel").textContent = `${distanceKm} km`;
+
+    const pct = clamp(((distanceKm - 2) / 118) * 86 + 8, 8, 94);
+    document.getElementById("humanPin").style.left = pct + "%";
+
+    const box = document.getElementById("telemetryBox");
+    box.classList.toggle("survived", surv.survived);
+    box.classList.toggle("fatal", !surv.survived);
+
+    document.getElementById("clockLabel").textContent = surv.survived
+      ? `SAFE MARGIN (THRESHOLD ${surv.safeDistKm} KM)`
+      : `SURVIVAL WINDOW (NEED ${surv.safeDistKm} KM)`;
+
+    document.getElementById("deathClock").textContent = surv.survived
+      ? `SAFE // ${formatClock(surv.etaSeconds)}`
+      : formatClock(surv.survivalSeconds);
+
+    document.getElementById("outcomeText").textContent = surv.cause;
+    document.getElementById("etaVal").textContent = `${surv.etaSeconds.toFixed(1)} s`;
+    document.getElementById("thermalVal").textContent = `${surv.thermalDrop}°C`;
+    document.getElementById("siteMarsVal").textContent = `${surv.marsScore.toFixed(1)} / 100`;
+
+    renderChart(ranked);
+  }
+
+  // Controls
+  const slider = document.getElementById("distSlider");
+  let lastTickStep = 45;
+  slider.addEventListener("input", (e) => {
+    stopSimulation();
+    distanceKm = parseInt(e.target.value, 10);
+    if (Math.abs(distanceKm - lastTickStep) >= 4) {
+      playClick();
+      lastTickStep = distanceKm;
+    }
+    renderAll();
+  });
+
+  document.querySelectorAll(".suit-opt").forEach(btn => {
+    btn.addEventListener("click", () => {
+      playClick();
+      stopSimulation();
+      suitMode = btn.dataset.suit;
+      document.querySelectorAll(".suit-opt").forEach(b => b.classList.toggle("active", b === btn));
+      renderAll();
+    });
+  });
+
+  document.getElementById("simBtn").addEventListener("click", runSimulation);
+
+  document.getElementById("soundBtn").addEventListener("click", (e) => {
+    soundEnabled = !soundEnabled;
+    e.currentTarget.textContent = soundEnabled ? "SFX: ON" : "SFX: OFF";
+    e.currentTarget.classList.toggle("active", soundEnabled);
+    if (soundEnabled) playClick();
+  });
+
+  // BONUS: Refresh from NASA POWER API
+  document.getElementById("nasaRefreshBtn").addEventListener("click", async (e) => {
+    playClick();
+    const btn = e.currentTarget;
+    const status = document.getElementById("statusLine");
+    btn.disabled = true;
+    btn.textContent = "SYNCING...";
+    status.textContent = "Querying NASA POWER 2025 monthly endpoint...";
+
+    try {
+      const updated = await Promise.all(dataset.map(async (place) => {
+        const url = `https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,PRECTOTCORR,ALLSKY_SFC_SW_DWN&community=RE&longitude=${place.lon}&latitude=${place.lat}&start=2025&end=2025&format=JSON`;
+        const res = await fetch(url);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const json = await res.json();
+        const p = json && json.properties && json.properties.parameter;
+        if (!p || !p.T2M || !p.PRECTOTCORR || !p.ALLSKY_SFC_SW_DWN) {
+          throw new Error("Invalid NASA payload");
+        }
+
+        const mT = [];
+        const mR = [];
+        const mS = [];
+        for (let m = 1; m <= 12; m++) {
+          const key = `2025${String(m).padStart(2, "0")}`;
+          const tv = Number(p.T2M[key]);
+          const rv = Number(p.PRECTOTCORR[key]);
+          const sv = Number(p.ALLSKY_SFC_SW_DWN[key]);
+          if (Number.isNaN(tv) || Number.isNaN(rv) || Number.isNaN(sv)) {
+            throw new Error("Missing monthly value");
+          }
+          mT.push(tv);
+          mR.push(rv);
+          mS.push(sv);
+        }
+
+        const annT = Number(p.T2M["202513"]);
+        const annR = Number(p.PRECTOTCORR["202513"]);
+        const annS = Number(p.ALLSKY_SFC_SW_DWN["202513"]);
+
+        return {
+          ...place,
+          annual: {
+            t: Number.isNaN(annT) ? place.annual.t : annT,
+            r: Number.isNaN(annR) ? place.annual.r : annR,
+            s: Number.isNaN(annS) ? place.annual.s : annS
+          },
+          monthly: { t: mT, r: mR, s: mS }
+        };
+      }));
+
+      dataset = updated;
+      document.getElementById("dataSourceTag").textContent = "NASA LIVE 2025";
+      status.textContent = "Synced live 2025 telemetry from NASA POWER.";
+      playOutcomeTone(true);
+      renderAll();
+    } catch (err) {
+      status.textContent = "Offline/CORS fallback active — using verified 2025 NASA POWER dataset.";
+    } finally {
+      btn.disabled = false;
+      btn.textContent = "↻ Refresh from NASA";
+    }
+  });
+
+  // Initial render
+  renderAll();
+})();
+</script>
+</body>
+</html>
